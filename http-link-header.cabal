@@ -1,7 +1,7 @@
 name:            http-link-header
-version:         0.0.0
+version:         0.1.0
 synopsis:        A parser and writer for the HTTP Link header as specified in RFC 5988 "Web Linking".
---description: TODO
+description:     https://github.com/myfreeweb/http-link-header
 category:        Web
 homepage:        https://github.com/myfreeweb/http-link-header
 author:          Greg V
@@ -34,7 +34,7 @@ library
         Network.HTTP.Link.Parser
         Network.HTTP.Link.Writer
     ghc-prof-options: -auto-all -prof
-    ghc-options: -threaded -Wall -Werror
+    ghc-options: -Wall
     hs-source-dirs: library
 
 test-suite tests
