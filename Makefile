@@ -1,9 +1,12 @@
-.PHONY: all build clean configure haddock hpc install repl test
+.PHONY: all build bench clean configure haddock hpc install repl test
 
 all: install configure build haddock test hpc
 
 build:
 	cabal build
+
+bench:
+	cabal bench
 
 clean:
 	cabal clean
@@ -11,7 +14,7 @@ clean:
 	if test -d .hpc; then rm -r .hpc; fi
 
 configure:
-	cabal configure --enable-tests --enable-library-coverage -v2
+	cabal configure --enable-tests --enable-benchmarks --enable-library-coverage -v2
 
 haddock:
 	cabal haddock --hyperlink-source
@@ -23,7 +26,7 @@ hpc:
 
 install:
 	cabal sandbox init
-	cabal install --enable-tests --only-dependencies --reorder-goals
+	cabal install --enable-tests --enable-benchmarks --only-dependencies --reorder-goals
 
 repl:
 	cabal repl lib:http-link-header
