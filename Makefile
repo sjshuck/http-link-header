@@ -6,7 +6,7 @@ build:
 	cabal build
 
 bench:
-	rm benchmarks.tix
+	rm benchmarks.tix || true
 	cabal bench
 
 clean:
