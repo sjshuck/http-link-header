@@ -15,12 +15,16 @@ spec = do
       ("<http://example.com>; rel=\"example\"" :: Text) ~> linkHeader
         `shouldParse` [ Link "http://example.com" [(Rel, "example")] ]
 
-    it "parses a link with an empty attribute" $ do
+    it "ignores empty attributes" $ do
       ("<http://example.com>; title=\"\"" :: Text) ~> linkHeader
-        `shouldParse` [ Link "http://example.com" [(Title, "")] ]
+        `shouldParse` [ Link "http://example.com" [] ]
 
-    it "parses a link with escape characters" $ do
-      ("<http://example.com>; title=\"some \\\" thing \\\" \"" :: Text) ~> linkHeader
+    it "parses a link with backslash escaped attributes" $ do
+      ("<http://example.com>; title=\"some \\\" thing \\\"\"" :: Text) ~> linkHeader
+        `shouldParse` [ Link "http://example.com" [(Title, "some \" thing \"")] ]
+
+    it "parses a link with URI escaped attributes" $ do
+      ("<http://example.com>; title=\"some %22 thing %22\"" :: Text) ~> linkHeader
         `shouldParse` [ Link "http://example.com" [(Title, "some \" thing \"")] ]
 
     it "parses a link with multiple attributes" $ do

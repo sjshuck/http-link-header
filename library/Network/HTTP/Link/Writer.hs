@@ -12,11 +12,13 @@ import           Network.URI
 import           Network.HTTP.Link.Types
 
 writeParam :: (LinkParam, Text) -> Text
-writeParam (t, v) = mconcat ["; ", pack $ show t, "=\"", v, "\""]
+writeParam (t, v) = mconcat ["; ", pack $ show t, "=\"", escPar v, "\""]
+  where escPar = pack . escapeURIString (/= '"') . unpack
+        -- maybe URI escaping is not what we should do here? eh, whatever
 
 writeLink :: Link -> Text
-writeLink l = mconcat $ ["<", esc $ href l, ">"] ++ map writeParam (linkParams l)
-  where esc = pack . escapeURIString isAllowedInURI . unpack
+writeLink l = mconcat $ ["<", escURI $ href l, ">"] ++ map writeParam (linkParams l)
+  where escURI = pack . escapeURIString isAllowedInURI . unpack
 
 writeLinkHeader :: [Link] -> Text
 writeLinkHeader = intercalate ", " . map writeLink

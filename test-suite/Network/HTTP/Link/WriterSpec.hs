@@ -17,6 +17,10 @@ spec = do
       writeLinkHeader [Link "http://example.com/hello world" [(Rel, "next")]]
         `shouldBe` "<http://example.com/hello%20world>; rel=\"next\""
 
+    it "writes a single link with quote escaping" $ do
+      writeLinkHeader [Link "http://example.com" [(Rel, "some \"weirdness\"")]]
+        `shouldBe` "<http://example.com>; rel=\"some %22weirdness%22\""
+
     it "writes a single link with multiple parameters" $ do
       writeLinkHeader [Link "http://example.com" [(Rel, "next"), (Title, "hello world")]]
         `shouldBe` "<http://example.com>; rel=\"next\"; title=\"hello world\""

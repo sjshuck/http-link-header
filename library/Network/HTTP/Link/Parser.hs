@@ -11,12 +11,14 @@ module Network.HTTP.Link.Parser (
 , parseLinkHeader
 ) where
 
-import           Prelude hiding (takeWhile)
-import           Data.Text hiding (takeWhile, map)
+import           Prelude hiding (takeWhile, take)
+import           Data.Text hiding (takeWhile, map, take)
 import           Data.Char (isSpace)
+import           Data.Monoid (mconcat)
 import           Data.Attoparsec.Text
 import           Control.Applicative
 import           Control.Error.Util (hush)
+import           Network.URI
 import           Network.HTTP.Link.Types
 
 allConditions :: [a -> Bool] -> a -> Bool
@@ -28,9 +30,11 @@ charWS x = skipSpace >> char x >> skipSpace
 quotedString :: Parser Text
 quotedString = do
   char '"'
-  v <- takeWhile (/= '"')
+  v <- many1 stringPart
   char '"'
-  return v
+  return $ pack $ unEscapeString $ unpack $ mconcat v
+  where stringPart = takeWhile1 (allConditions [(/= '"'), (/= '\\')]) <|> escapedChar
+        escapedChar = char '\\' >> take 1
 
 paramName :: Parser LinkParam
 paramName = (string "rel"       >> return Rel)
