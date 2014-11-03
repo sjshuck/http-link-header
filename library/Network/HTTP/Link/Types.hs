@@ -7,18 +7,7 @@ import           Data.Text
 
 -- | The link attribute key.
 data LinkParam = Rel | Anchor | Rev | Hreflang | Media | Title | Title' | ContentType | Other Text
-  deriving (Eq)
-
-instance Show LinkParam where
-  show Rel = "rel"
-  show Anchor = "anchor"
-  show Rev = "rev"
-  show Hreflang = "hreflang"
-  show Media = "media"
-  show Title = "title"
-  show Title' = "title*"
-  show ContentType = "type"
-  show (Other t) = unpack t
+  deriving (Eq, Show)
 
 -- | A single link.
 data Link = Link Text [(LinkParam, Text)]

@@ -30,22 +30,22 @@ charWS x = skipSpace >> char x >> skipSpace
 quotedString :: Parser Text
 quotedString = do
   char '"'
-  v <- many1 stringPart
+  v <- many stringPart
   char '"'
   return $ pack $ unEscapeString $ unpack $ mconcat v
   where stringPart = takeWhile1 (allConditions [(/= '"'), (/= '\\')]) <|> escapedChar
         escapedChar = char '\\' >> take 1
 
-paramName :: Parser LinkParam
-paramName = (string "rel"       >> return Rel)
-        <|> (string "anchor"    >> return Anchor)
-        <|> (string "rev"       >> return Rev)
-        <|> (string "hreflang"  >> return Hreflang)
-        <|> (string "media"     >> return Media)
-        <|> (string "title"     >> return Title)
-        <|> (string "title*"    >> return Title')
-        <|> (string "type"      >> return ContentType)
-        -- TODO: Other
+paramName :: Text -> LinkParam
+paramName "rel"       = Rel
+paramName "anchor"    = Anchor
+paramName "rev"       = Rev
+paramName "hreflang"  = Hreflang
+paramName "media"     = Media
+paramName "title"     = Title
+paramName "title*"    = Title'
+paramName "type"      = ContentType
+paramName x           = Other x
 
 relType :: Parser Text
 relType = takeWhile1 $ inClass "-0-9a-z."
@@ -58,10 +58,11 @@ paramValue _ = quotedString
 param :: Parser (LinkParam, Text)
 param = do
   charWS ';'
-  n <- paramName
+  n <- takeWhile (allConditions [(/= '='), not . isSpace])
+  let n' = paramName n
   charWS '='
-  v <- paramValue n
-  return (n, v)
+  v <- paramValue n'
+  return (n', v)
 
 link :: Parser Link
 link = do
