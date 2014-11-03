@@ -17,8 +17,8 @@ writeLinkHeader [ Link "https://example.com/hello world" [(Rel, "next"), (Title,
 
 ----- Parsing
 parseLinkHeader "<https://example.com/2>; rel=\"next\", <https://example.com/0>; rel=prev"
--- Just [ Link "https://example.com/2" [(Rel, "next") 
---      , Link "https://example.com/0" [(Rel, "prev") ]
+-- Just [ Link "https://example.com/2" [(Rel, "next")]
+--      , Link "https://example.com/0" [(Rel, "prev")] ]
 ```
 
 ## Development
