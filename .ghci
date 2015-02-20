@@ -1,3 +1,4 @@
-:set -itest-suite/ -package hspec -package hspec-attoparsec -package QuickCheck
+:set -itest-suite/ -ibenchmark/ -package criterion -package hspec -package hspec-attoparsec -package QuickCheck
 :def test   \_ -> return $ ":load test-suite/Spec.hs\n:reload\n:main --color"
 :def retest \_ -> return $ ":load test-suite/Spec.hs\n:reload\n:main --color --rerun"
+:def bench  \_ -> return $ ":load benchmark/Bench.hs\n:reload\n:main"
