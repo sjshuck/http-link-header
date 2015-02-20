@@ -14,7 +14,7 @@ cabal-version:   >= 1.18
 extra-source-files:
     README.md
 tested-with:
-    GHC == 7.8.2
+    GHC == 7.8.3
 
 source-repository head
     type: git
@@ -42,7 +42,7 @@ test-suite tests
         base >= 4.0.0.0 && < 5
       , text
       , http-link-header
-      , hspec == 1.*
+      , hspec == 2.1.*
         , QuickCheck
       , hspec-attoparsec
     default-language: Haskell2010

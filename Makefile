@@ -15,7 +15,7 @@ clean:
 	if test -d .hpc; then rm -r .hpc; fi
 
 configure:
-	cabal configure --enable-tests --enable-benchmarks --enable-library-coverage -v2
+	cabal configure --enable-tests --enable-benchmarks --enable-coverage -v2
 
 haddock:
 	cabal haddock --hyperlink-source
@@ -30,7 +30,7 @@ install:
 	cabal install --enable-tests --enable-benchmarks --only-dependencies --reorder-goals
 
 repl:
-	cabal repl lib:http-link-header
+	cabal repl lib:http-link-header --ghc-options="-fno-hpc"
 
 test:
 	cabal test tests --show-details=always --test-option=--color
