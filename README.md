@@ -1,9 +1,6 @@
 # http-link-header [![Hackage](https://img.shields.io/hackage/v/http-link-header.svg?style=flat)](https://hackage.haskell.org/package/http-link-header) [![Build Status](https://img.shields.io/travis/myfreeweb/http-link-header.svg?style=flat)](https://travis-ci.org/myfreeweb/http-link-header) [![Coverage Status](https://img.shields.io/coveralls/myfreeweb/http-link-header.svg?style=flat)](https://coveralls.io/r/myfreeweb/http-link-header) [![unlicense](https://img.shields.io/badge/un-license-green.svg?style=flat)](http://unlicense.org)
 
 A Haskell library than implements a parser and a writer for the HTTP Link header as specified in [RFC 5988 "Web Linking"](https://tools.ietf.org/html/rfc5988).
-Very fast.
-Not 100% compliant (does anyone actually use `title*`?).
-Liberal parser, conservative writer.
 
 ## Usage
 

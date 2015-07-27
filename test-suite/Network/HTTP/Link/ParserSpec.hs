@@ -48,6 +48,10 @@ spec = do
       ("<http://example.com>; rel=next; rev=prev" :: Text) ~> linkHeader
         `shouldParse` [ l "http://example.com" [(Rel, "next"), (Rev, "prev")] ]
 
+    it "does not blow up on title*" $ do
+      ("<http://example.com>; title*=UTF-8'de'n%c3%a4chstes%20Kapitel" :: Text) ~> linkHeader
+        `shouldParse` [ l "http://example.com" [(Title', "UTF-8'de'n%c3%a4chstes%20Kapitel")] ]
+
     it "parses weird whitespace all over the place" $ do
       ("\n\t   < http://example.com\t>;rel=\t\"example\";   \ttitle =\"example dot com\" \n " :: Text) ~> linkHeader
         `shouldParse` [ l "http://example.com" [(Rel, "example"), (Title, "example dot com")] ]

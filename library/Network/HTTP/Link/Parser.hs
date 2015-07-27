@@ -51,9 +51,10 @@ relType :: Parser Text
 relType = takeWhile1 $ inClass "-0-9a-z."
 
 paramValue :: LinkParam -> Parser Text
-paramValue Rel = quotedString <|> relType
-paramValue Rev = quotedString <|> relType
-paramValue _ = quotedString
+paramValue Rel    = quotedString <|> relType
+paramValue Rev    = quotedString <|> relType
+paramValue Title' = takeWhile (allConditions [not . isSpace])
+paramValue _      = quotedString
 
 param :: Parser (LinkParam, Text)
 param = do
