@@ -8,7 +8,6 @@ import           Data.Text
 import           Data.Maybe (fromJust)
 import           Network.HTTP.Link.Types
 import           Network.HTTP.Link.Parser
-import           Network.URI
 
 spec :: Spec
 spec = do

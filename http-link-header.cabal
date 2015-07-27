@@ -27,6 +27,7 @@ library
       , errors
       , network-uri
       , attoparsec
+      , bytestring-conversion
     default-language: Haskell2010
     exposed-modules:
         Network.HTTP.Link
