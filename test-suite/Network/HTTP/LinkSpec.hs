@@ -1,12 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module Network.HTTP.LinkSpec (module Network.HTTP.LinkSpec) where
+module Network.HTTP.LinkSpec where
 
 import           Test.Hspec
 import           Test.QuickCheck
 import           Data.Monoid (mconcat)
 import qualified Data.Text as T
+import           Data.Maybe (fromJust)
 import           Network.HTTP.Link
 
 instance Arbitrary Link where
@@ -16,7 +17,7 @@ instance Arbitrary Link where
     urlTld <- elements ["com", "net", "org", "me", "is", "technology", "club"]
     urlPath <- listOf $ elements ['a'..'z']
     params <- listOf genParam
-    return $ Link (T.pack $ mconcat [urlScheme, urlDomain, ".", urlTld, "/", urlPath]) params
+    return $ fromJust $ lnk (mconcat [urlScheme, urlDomain, ".", urlTld, "/", urlPath]) params
     where genParam = do
             otherParamKey <- listOf1 $ elements ['a'..'z']
             paramKey <- elements [Rel, Rev, Title, Hreflang, Anchor, Media, ContentType, Other (T.pack otherParamKey)]

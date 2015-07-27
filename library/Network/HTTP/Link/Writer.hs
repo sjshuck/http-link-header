@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, Trustworthy #-}
+{-# LANGUAGE OverloadedStrings, Safe #-}
 
 module Network.HTTP.Link.Writer (
   writeLink
@@ -27,8 +27,7 @@ writeParam (t, v) = mconcat ["; ", writeParamKey t, "=\"", escPar v, "\""]
         -- maybe URI escaping is not what we should do here? eh, whatever
 
 writeLink :: Link -> Text
-writeLink l = mconcat $ ["<", escURI $ href l, ">"] ++ map writeParam (linkParams l)
-  where escURI = pack . escapeURIString isAllowedInURI . unpack
+writeLink l = mconcat $ ["<", pack . show $ href l, ">"] ++ map writeParam (linkParams l)
 
 writeLinkHeader :: [Link] -> Text
 writeLinkHeader = intercalate ", " . map writeLink

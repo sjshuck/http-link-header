@@ -9,16 +9,18 @@ Liberal parser, conservative writer.
 
 ```haskell
 import Network.HTTP.Link
+import Network.URI
+import Data.Maybe
 
 ----- Writing
-writeLinkHeader [ Link "https://example.com/hello world" [(Rel, "next"), (Title, "hello world")]
-                , Link "https://yolo.tld" [(Rel, "license")] ]
+writeLinkHeader [ Link (fromJust $ parseURI "https://example.com/hello%20world") [(Rel, "next"), (Title, "hello world")]
+                , Link (fromJust $ parseURI "https://yolo.tld") [(Rel, "license")] ]
 -- "<https://example.com/hello%20world>; rel=\"next\"; title=\"hello world\", <https://yolo.tld>; rel=\"license\""
 
 ----- Parsing
 parseLinkHeader "<https://example.com/2>; rel=\"next\", <https://example.com/0>; rel=prev"
--- Just [ Link "https://example.com/2" [(Rel, "next")]
---      , Link "https://example.com/0" [(Rel, "prev")] ]
+-- Just [ Link https://example.com/2 [(Rel, "next")]
+--      , Link https://example.com/0 [(Rel, "prev")] ]
 ```
 
 ## Development

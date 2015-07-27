@@ -1,4 +1,4 @@
-{-# LANGUAGE Trustworthy #-}
+{-# LANGUAGE Safe #-}
 
 -- | This module exports all the things at the same time.
 module Network.HTTP.Link (

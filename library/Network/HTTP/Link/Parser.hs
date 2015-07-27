@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, Trustworthy #-}
+{-# LANGUAGE OverloadedStrings, Safe #-}
 {-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 
 -- | The parser for the HTTP Link header as defined in RFC 5988.
@@ -12,12 +12,12 @@ module Network.HTTP.Link.Parser (
 ) where
 
 import           Prelude hiding (takeWhile, take)
+import           Control.Applicative
+import           Control.Error.Util (hush)
 import           Data.Text hiding (takeWhile, map, take)
 import           Data.Char (isSpace)
 import           Data.Monoid (mconcat)
 import           Data.Attoparsec.Text
-import           Control.Applicative
-import           Control.Error.Util (hush)
 import           Network.URI
 import           Network.HTTP.Link.Types
 
@@ -67,11 +67,13 @@ param = do
 link :: Parser Link
 link = do
   charWS '<'
-  url <- takeWhile1 $ allConditions [(/= '>'), not . isSpace]
+  linkText <- takeWhile1 $ allConditions [(/= '>'), not . isSpace]
   charWS '>'
   params <- many' $ param
   skipSpace
-  return $ Link url params
+  case parseURIReference $ unpack linkText of
+    Just u -> return $ Link u params
+    Nothing -> fail "Couldn't parse the URI"
 
 -- | The Attoparsec parser for the Link header.
 linkHeader :: Parser [Link]
