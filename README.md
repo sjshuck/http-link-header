@@ -1,4 +1,4 @@
-# http-link-header [![Hackage](https://img.shields.io/hackage/v/http-link-header.svg?style=flat)](https://hackage.haskell.org/package/http-link-header) [![Build Status](https://img.shields.io/travis/myfreeweb/http-link-header.svg?style=flat)](https://travis-ci.org/myfreeweb/http-link-header) [![Coverage Status](https://img.shields.io/coveralls/myfreeweb/http-link-header.svg?style=flat)](https://coveralls.io/r/myfreeweb/http-link-header) [![ISC License](https://img.shields.io/badge/license-ISC-red.svg?style=flat)](https://tldrlegal.com/license/-isc-license)
+# http-link-header [![Hackage](https://img.shields.io/hackage/v/http-link-header.svg?style=flat)](https://hackage.haskell.org/package/http-link-header) [![Build Status](https://img.shields.io/travis/myfreeweb/http-link-header.svg?style=flat)](https://travis-ci.org/myfreeweb/http-link-header) [![Coverage Status](https://img.shields.io/coveralls/myfreeweb/http-link-header.svg?style=flat)](https://coveralls.io/r/myfreeweb/http-link-header) [![unlicense](https://img.shields.io/badge/un-license-green.svg?style=flat)](http://unlicense.org)
 
 A Haskell library than implements a parser and a writer for the HTTP Link header as specified in [RFC 5988 "Web Linking"](https://tools.ietf.org/html/rfc5988).
 Very fast.
@@ -23,31 +23,31 @@ parseLinkHeader "<https://example.com/2>; rel=\"next\", <https://example.com/0>;
 
 ## Development
 
+Use [stack] to build.  
+Use ghci to run tests quickly with `:test` (see the `.ghci` file).
+
 ```bash
-# Update to latest version of Cabal.
-cabal update
-cabal install cabal-install
+$ stack build
 
-# Initialize a sandbox and install the package's dependencies.
-make install
+$ stack test && rm tests.tix
 
-# Configure & build the package.
-make configure build
+$ stack bench
 
-# Test package.
-make test
-
-# Benchmark package.
-make bench
-
-# Start a REPL.
-make repl
-
-# Generate documentation.
-make haddock
+$ stack ghci --ghc-options="-fno-hpc"
 ```
+
+[stack]: https://github.com/commercialhaskell/stack
+
+## Contributing
+
+Please feel free to submit pull requests!
+Bugfixes and simple non-breaking improvements will be accepted without any questions :-)
+
+By participating in this project you agree to follow the [Contributor Code of Conduct](http://contributor-covenant.org/version/1/2/0/).
+
+[The list of contributors is available on GitHub](https://github.com/myfreeweb/http-link-header/graphs/contributors).
 
 ## License
 
-Copyright 2014-2015 Greg V <greg@unrelenting.technology>  
-Available under the ISC license, see the `COPYING` file
+This is free and unencumbered software released into the public domain.  
+For more information, please refer to the `UNLICENSE` file or [unlicense.org](http://unlicense.org).
