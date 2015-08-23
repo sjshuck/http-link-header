@@ -24,6 +24,7 @@ library
     build-depends:
         base >= 4.3.0.0 && < 5
       , text
+      , bytestring
       , errors
       , network-uri
       , attoparsec

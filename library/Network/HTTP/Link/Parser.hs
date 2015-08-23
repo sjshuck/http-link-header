@@ -9,12 +9,16 @@ module Network.HTTP.Link.Parser (
   linkHeader
 , parseLinkHeader'
 , parseLinkHeader
+, parseLinkHeaderBS'
+, parseLinkHeaderBS
 ) where
 
 import           Prelude hiding (takeWhile, take)
 import           Control.Applicative
 import           Control.Error.Util (hush)
 import           Data.Text hiding (takeWhile, map, take)
+import           Data.Text.Encoding (decodeUtf8)
+import           Data.ByteString (ByteString)
 import           Data.Char (isSpace)
 #if __GLASGOW_HASKELL__ < 709
 import           Data.Monoid (mconcat)
@@ -90,3 +94,12 @@ parseLinkHeader' = parseOnly linkHeader
 -- | Parses a Link header, returns a Maybe.
 parseLinkHeader :: Text -> Maybe [Link]
 parseLinkHeader = hush . parseLinkHeader'
+
+-- | Parses a Link header, returns an Either, where Left is the Attoparsec
+-- error string (probably not a useful one).
+parseLinkHeaderBS' :: ByteString -> Either String [Link]
+parseLinkHeaderBS' = parseLinkHeader' . decodeUtf8
+
+-- | Parses a Link header, returns a Maybe.
+parseLinkHeaderBS :: ByteString -> Maybe [Link]
+parseLinkHeaderBS = parseLinkHeader . decodeUtf8
