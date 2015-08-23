@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, Safe #-}
+{-# LANGUAGE OverloadedStrings, Safe, CPP #-}
 
 module Network.HTTP.Link.Writer (
   writeLink
@@ -6,7 +6,9 @@ module Network.HTTP.Link.Writer (
 ) where
 
 import           Data.Text hiding (map)
+#if __GLASGOW_HASKELL__ < 709
 import           Data.Monoid (mconcat)
+#endif
 import           Network.URI
 import           Network.HTTP.Link.Types
 

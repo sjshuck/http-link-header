@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, Safe #-}
+{-# LANGUAGE OverloadedStrings, Safe, CPP #-}
 {-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 
 -- | The parser for the HTTP Link header as defined in RFC 5988.
@@ -16,7 +16,9 @@ import           Control.Applicative
 import           Control.Error.Util (hush)
 import           Data.Text hiding (takeWhile, map, take)
 import           Data.Char (isSpace)
+#if __GLASGOW_HASKELL__ < 709
 import           Data.Monoid (mconcat)
+#endif
 import           Data.Attoparsec.Text
 import           Network.URI
 import           Network.HTTP.Link.Types

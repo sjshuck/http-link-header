@@ -1,11 +1,13 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, CPP #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Network.HTTP.LinkSpec where
 
 import           Test.Hspec
 import           Test.QuickCheck
+#if __GLASGOW_HASKELL__ < 709
 import           Data.Monoid (mconcat)
+#endif
 import qualified Data.Text as T
 import           Data.Maybe (fromJust)
 import           Network.HTTP.Link
