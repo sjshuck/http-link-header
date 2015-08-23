@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, UnicodeSyntax #-}
 
 module Network.HTTP.Link.WriterSpec where
 
@@ -7,7 +7,7 @@ import           Data.Maybe (fromJust)
 import           Network.HTTP.Link.Types
 import           Network.HTTP.Link.Writer
 
-spec :: Spec
+spec ∷ Spec
 spec = do
   describe "writeLinkHeader" $ do
     let l u r = fromJust $ lnk u r

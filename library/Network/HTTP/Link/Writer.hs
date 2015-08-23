@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, Safe, CPP #-}
+{-# LANGUAGE OverloadedStrings, UnicodeSyntax, Safe, CPP #-}
 
 module Network.HTTP.Link.Writer (
   writeLink
@@ -12,7 +12,7 @@ import           Data.Monoid (mconcat)
 import           Network.URI
 import           Network.HTTP.Link.Types
 
-writeParamKey :: LinkParam -> Text
+writeParamKey ∷ LinkParam → Text
 writeParamKey Rel = "rel"
 writeParamKey Anchor = "anchor"
 writeParamKey Rev = "rev"
@@ -23,13 +23,13 @@ writeParamKey Title' = "title*"
 writeParamKey ContentType = "type"
 writeParamKey (Other t) = t
 
-writeParam :: (LinkParam, Text) -> Text
+writeParam ∷ (LinkParam, Text) → Text
 writeParam (t, v) = mconcat ["; ", writeParamKey t, "=\"", escPar v, "\""]
   where escPar = pack . escapeURIString (/= '"') . unpack
         -- maybe URI escaping is not what we should do here? eh, whatever
 
-writeLink :: Link -> Text
+writeLink ∷ Link → Text
 writeLink l = mconcat $ ["<", pack . show $ href l, ">"] ++ map writeParam (linkParams l)
 
-writeLinkHeader :: [Link] -> Text
+writeLinkHeader ∷ [Link] → Text
 writeLinkHeader = intercalate ", " . map writeLink
