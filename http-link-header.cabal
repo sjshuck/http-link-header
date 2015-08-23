@@ -1,5 +1,5 @@
 name:            http-link-header
-version:         1.0.0
+version:         1.0.1
 synopsis:        A parser and writer for the HTTP Link header as specified in RFC 5988 "Web Linking".
 description:     https://github.com/myfreeweb/http-link-header
 category:        Web
