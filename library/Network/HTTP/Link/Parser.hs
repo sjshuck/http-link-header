@@ -20,7 +20,7 @@ import           Data.Text hiding (takeWhile, map, take)
 import           Data.Text.Encoding (decodeUtf8)
 import           Data.ByteString (ByteString)
 import           Data.Char (isSpace)
-#if __GLASGOW_HASKELL__ < 709
+#if !MIN_VERSION_base(4,8,0)
 import           Data.Monoid (mconcat)
 #endif
 import           Data.Attoparsec.Text

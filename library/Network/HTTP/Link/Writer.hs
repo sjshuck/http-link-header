@@ -6,7 +6,7 @@ module Network.HTTP.Link.Writer (
 ) where
 
 import           Data.Text hiding (map)
-#if __GLASGOW_HASKELL__ < 709
+#if !MIN_VERSION_base(4,8,0)
 import           Data.Monoid (mconcat)
 #endif
 import           Network.URI

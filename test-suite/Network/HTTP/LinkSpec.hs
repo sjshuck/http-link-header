@@ -5,7 +5,7 @@ module Network.HTTP.LinkSpec where
 
 import           Test.Hspec
 import           Test.QuickCheck
-#if __GLASGOW_HASKELL__ < 709
+#if !MIN_VERSION_base(4,8,0)
 import           Data.Monoid (mconcat)
 #endif
 import qualified Data.Text as T
