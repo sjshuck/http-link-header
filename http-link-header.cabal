@@ -63,6 +63,7 @@ benchmark benchmarks
       , text
       , http-link-header
       , directory
+      , network-uri
       , transformers
       , criterion
     default-language: Haskell2010
