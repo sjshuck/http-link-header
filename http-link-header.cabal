@@ -27,6 +27,7 @@ library
       , bytestring
       , errors
       , network-uri
+      , http-api-data
       , attoparsec
       , bytestring-conversion
     default-language: Haskell2010

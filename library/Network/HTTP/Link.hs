@@ -9,6 +9,7 @@ module Network.HTTP.Link (
 ) where
 
 import           Data.ByteString.Conversion
+import           Web.HttpApiData
 import safe      Network.HTTP.Link.Types
 import safe      Network.HTTP.Link.Writer
 import safe      Network.HTTP.Link.Parser
@@ -18,3 +19,11 @@ instance ToByteString [Link] where
 
 instance ToByteString Link where
   builder = builder . writeLink
+
+instance ToHttpApiData [Link] where
+  toUrlPiece = toUrlPiece . writeLinkHeader
+  toHeader = toByteString'
+
+instance ToHttpApiData Link where
+  toUrlPiece = toUrlPiece . writeLink
+  toHeader = toByteString'
