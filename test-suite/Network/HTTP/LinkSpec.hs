@@ -21,7 +21,8 @@ instance Arbitrary Link where
     params ← listOf genParam
     return $ fromJust $ lnk (mconcat [urlScheme, urlDomain, ".", urlTld, "/", urlPath]) params
     where genParam = do
-            otherParamKey ← listOf1 $ elements ['a'..'z']
+            otherParamKey ← suchThat (listOf1 $ elements ['a'..'z']) (\x → x /= "rel" && x /= "rev" && x /= "title"
+              && x /= "title*" && x /= "hreflang" && x /= "anchor" && x /= "media" && x /= "type")
             paramKey ← elements [Rel, Rev, Title, Hreflang, Anchor, Media, ContentType, Other (T.pack otherParamKey)]
             paramValue ← listOf $ elements ['a'..'z']
             return (paramKey, T.pack paramValue)
