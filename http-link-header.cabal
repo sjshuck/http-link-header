@@ -1,11 +1,11 @@
 name:            http-link-header
-version:         1.0.3
+version:         1.0.3.1
 synopsis:        A parser and writer for the HTTP Link header as specified in RFC 5988 "Web Linking".
 description:     https://github.com/myfreeweb/http-link-header
 category:        Web
 homepage:        https://github.com/myfreeweb/http-link-header
 author:          Greg V
-copyright:       2014-2016 Greg V <greg@unrelenting.technology>
+copyright:       2014-2018 Greg V <greg@unrelenting.technology>
 maintainer:      greg@unrelenting.technology
 license:         PublicDomain
 license-file:    UNLICENSE
@@ -14,7 +14,7 @@ cabal-version:   >= 1.10
 extra-source-files:
     README.md
 tested-with:
-    GHC == 8.0.1
+    GHC == 8.4.3
 
 source-repository head
     type: git
