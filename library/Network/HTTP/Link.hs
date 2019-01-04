@@ -1,5 +1,6 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-{-# LANGUAGE Trustworthy, FlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE Trustworthy       #-}
 
 -- | This module exports all the things at the same time.
 module Network.HTTP.Link (
@@ -8,22 +9,16 @@ module Network.HTTP.Link (
 , module Network.HTTP.Link.Parser
 ) where
 
-import           Data.ByteString.Conversion
-import           Web.HttpApiData
+import           Data.Text.Encoding
+import safe      Network.HTTP.Link.Parser
 import safe      Network.HTTP.Link.Types
 import safe      Network.HTTP.Link.Writer
-import safe      Network.HTTP.Link.Parser
-
-instance ToByteString [Link] where
-  builder = builder . writeLinkHeader
-
-instance ToByteString Link where
-  builder = builder . writeLink
+import           Web.HttpApiData
 
 instance ToHttpApiData [Link] where
   toUrlPiece = toUrlPiece . writeLinkHeader
-  toHeader = toByteString'
+  toHeader = encodeUtf8 . writeLinkHeader
 
 instance ToHttpApiData Link where
   toUrlPiece = toUrlPiece . writeLink
-  toHeader = toByteString'
+  toHeader = encodeUtf8 . writeLink
