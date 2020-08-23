@@ -18,8 +18,7 @@ data GLink uri = Link uri [(LinkParam, Text)]
 
 -- | Types that can represent URLs.
 --
--- For example, to parse links containing 'Text.URI.URI' from the modern-uri
--- package, simply define:
+-- For example, to parse links containing [@Text.URI.URI@ from the @modern-uri@ package](https://hackage.haskell.org/package/modern-uri-0.3.2.0/docs/Text-URI.html#t:URI), simply define:
 --
 -- @
 --    instance IsURI Modern.URI where
