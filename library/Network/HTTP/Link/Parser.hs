@@ -11,6 +11,18 @@ module Network.HTTP.Link.Parser (
 , parseLinkHeader
 , parseLinkHeaderBS'
 , parseLinkHeaderBS
+  -- ** Generic links ('GLink')
+  --
+  -- | These functions are like the ones above, except they represent URLs as
+  -- @('IsURI' uri) ⇒ uri@ values rather than concrete 'URI's from the
+  -- network-uri package.  Use these if you need access to the raw URLs
+  -- (@uri ~ Text@) or some other representation of URLs.
+  --
+  -- @since 1.1.0
+, parseGLinkHeader'
+, parseGLinkHeader
+, parseGLinkHeaderBS'
+, parseGLinkHeaderBS
 ) where
 
 import           Prelude hiding (takeWhile, take)
@@ -71,35 +83,56 @@ param = do
   v ← paramValue n'
   return (n', v)
 
-link ∷ Parser Link
-link = do
+glink ∷ (IsURI uri) ⇒ Parser (GLink uri)
+glink = do
   charWS '<'
   linkText ← takeWhile1 $ allConditions [(/= '>'), not . isSpace]
   charWS '>'
   params ← many' $ param
   skipSpace
-  case parseURIReference $ unpack linkText of
-    Just u → return $ Link u params
-    Nothing → fail "Couldn't parse the URI"
+  case uriFromText linkText of
+    Right u → return $ Link u params
+    Left e → fail $ "Couldn't parse the URI " ++ show linkText ++ if e == "" then "" else ": " ++ e
+
+glinkHeader ∷ (IsURI uri) ⇒ Parser [GLink uri]
+glinkHeader = glink `sepBy'` (char ',')
 
 -- | The Attoparsec parser for the Link header.
 linkHeader ∷ Parser [Link]
-linkHeader = link `sepBy'` (char ',')
+linkHeader = glinkHeader
+
+-- | Parses a GLink header, returns an Either, where Left is the Attoparsec
+-- error string (probably not a useful one).
+parseGLinkHeader' ∷ (IsURI uri) ⇒ Text → Either String [GLink uri]
+parseGLinkHeader' = parseOnly glinkHeader
+
+-- | Parses a GLink header, returns a Maybe.
+parseGLinkHeader ∷ (IsURI uri) ⇒ Text → Maybe [GLink uri]
+parseGLinkHeader = hush . parseGLinkHeader'
+
+-- | Parses a GLink header, returns an Either, where Left is the Attoparsec
+-- error string (probably not a useful one).
+parseGLinkHeaderBS' ∷ (IsURI uri) ⇒ ByteString → Either String [GLink uri]
+parseGLinkHeaderBS' = parseGLinkHeader' . decodeUtf8
+
+-- | Parses a GLink header, returns a Maybe.
+parseGLinkHeaderBS ∷ (IsURI uri) ⇒ ByteString → Maybe [GLink uri]
+parseGLinkHeaderBS = parseGLinkHeader . decodeUtf8
 
 -- | Parses a Link header, returns an Either, where Left is the Attoparsec
 -- error string (probably not a useful one).
 parseLinkHeader' ∷ Text → Either String [Link]
-parseLinkHeader' = parseOnly linkHeader
+parseLinkHeader' = parseGLinkHeader'
 
 -- | Parses a Link header, returns a Maybe.
 parseLinkHeader ∷ Text → Maybe [Link]
-parseLinkHeader = hush . parseLinkHeader'
+parseLinkHeader = parseGLinkHeader
 
 -- | Parses a Link header, returns an Either, where Left is the Attoparsec
 -- error string (probably not a useful one).
 parseLinkHeaderBS' ∷ ByteString → Either String [Link]
-parseLinkHeaderBS' = parseLinkHeader' . decodeUtf8
+parseLinkHeaderBS' = parseGLinkHeaderBS'
 
 -- | Parses a Link header, returns a Maybe.
 parseLinkHeaderBS ∷ ByteString → Maybe [Link]
-parseLinkHeaderBS = parseLinkHeader . decodeUtf8
+parseLinkHeaderBS = parseGLinkHeaderBS

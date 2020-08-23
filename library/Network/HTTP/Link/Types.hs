@@ -10,9 +10,35 @@ import           Network.URI
 data LinkParam = Rel | Anchor | Rev | Hreflang | Media | Title | Title' | ContentType | Other Text
   deriving (Eq, Show)
 
--- | A single link.
-data Link = Link URI [(LinkParam, Text)]
-  deriving (Eq, Show)
+-- | A single link containing some representation of a URL.
+--
+-- @since 1.1.0
+data GLink uri = Link uri [(LinkParam, Text)]
+    deriving (Eq, Show)
+
+-- | Types that can represent URLs.
+--
+-- For example, to parse links containing 'Text.URI.URI' from the modern-uri
+-- package, simply define:
+--
+-- @
+--    instance IsURI Modern.URI where
+--        uriFromText = left displayException . mkURI
+-- @
+--
+-- @since 1.1.0
+class IsURI uri where
+    uriFromText ∷ Text → Either String uri
+
+instance IsURI URI where
+    uriFromText = maybe (Left "") Right . parseURIReference . unpack
+
+instance IsURI Text where
+    uriFromText = Right
+
+-- | A single link containing a network-uri URI.  Most of this library is
+-- specialized to this case.
+type Link = GLink URI
 
 -- | Extracts the URI from the link.
 href ∷ Link → URI

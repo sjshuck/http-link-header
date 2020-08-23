@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings, UnicodeSyntax, CPP #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Network.HTTP.LinkSpec where
