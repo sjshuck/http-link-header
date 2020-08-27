@@ -6,3 +6,4 @@ tmp/
 *.tix
 .stack-work/
 stack.yaml.lock
+http-link-header.cabal
