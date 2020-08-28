@@ -1,5 +1,4 @@
-{-# LANGUAGE OverloadedStrings, UnicodeSyntax, CPP #-}
-{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances, OverloadedStrings, UnicodeSyntax, CPP #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Network.HTTP.LinkSpec where
@@ -12,8 +11,9 @@ import           Data.Monoid (mconcat)
 import qualified Data.Text as T
 import           Data.Maybe (fromJust)
 import           Network.HTTP.Link
+import           Network.URI (URI)
 
-instance Arbitrary Link where
+instance Arbitrary (Link URI) where
   arbitrary = do
     urlScheme ← elements ["http://", "https://", "ftp://", "git+ssh://"]
     urlDomain ← listOf1 $ elements ['a'..'z']
@@ -32,4 +32,4 @@ spec ∷ Spec
 spec = do
   describe "writeLinkHeader → parseLinkHeader" $
     it "roundtrips successfully" $
-      property $ \x → parseLinkHeader (writeLinkHeader x) == Just x
+      property $ \x → parseLinkHeader (writeLinkHeader x) == Just (x :: [Link URI])
