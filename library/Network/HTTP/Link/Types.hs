@@ -29,7 +29,7 @@ data Link uri = Link uri [(LinkParam, Text)]
 -- @since 1.1.0
 class IsURI uri where
     uriFromText ∷ Text → Either String uri
-    uriToText ∷ uri -> Text
+    uriToText ∷ uri → Text
 
 instance IsURI URI where
     uriFromText = maybe (Left "") Right . parseURIReference . unpack

@@ -27,5 +27,5 @@ instance (IsURI uri) ⇒ ToHttpApiData (Link uri) where
   toHeader = encodeUtf8 . writeLink
 
 -- | Construct a Link.
-lnk ∷ (IsURI uri) => String → [(LinkParam, Text)] → Maybe (Link uri)
+lnk ∷ (IsURI uri) ⇒ String → [(LinkParam, Text)] → Maybe (Link uri)
 lnk u r = fmap (\x → Link x r) $ hush $ uriFromText $ pack u
