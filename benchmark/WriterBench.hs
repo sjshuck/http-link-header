@@ -4,6 +4,7 @@ module WriterBench (benchmarks) where
 
 import           Criterion
 import           Data.String              (IsString (..))
+import           Data.Text                (Text)
 import           Network.HTTP.Link.Types
 import           Network.HTTP.Link.Writer
 import           Network.URI
@@ -15,9 +16,9 @@ instance IsString URI where
 
 benchmarks :: [Benchmark]
 benchmarks = [
-    bench "minimal" $ whnf writeLinkHeader
+    bench "minimal" $ whnf writeLinkHeaderURI
         [ Link "http://example.com/thing" [ (Rel, "next") ] ]
-  , bench "large" $ whnf writeLinkHeader
+  , bench "large" $ whnf writeLinkHeaderURI
         [ Link "http://example.com/something_long"
                [ (Rel, "next prev http://hello.world/undefined")
                , (Title, "this is a test benchmark thingy")
@@ -26,3 +27,6 @@ benchmarks = [
                [ (Rel, "license")
                , (Rev, "author") ]]
   ]
+
+  where
+    writeLinkHeaderURI = writeLinkHeader :: [Link URI] -> Text

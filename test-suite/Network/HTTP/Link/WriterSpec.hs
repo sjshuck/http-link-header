@@ -4,13 +4,15 @@ module Network.HTTP.Link.WriterSpec where
 
 import           Test.Hspec
 import           Data.Maybe (fromJust)
+import           Network.HTTP.Link (lnk)
 import           Network.HTTP.Link.Types
 import           Network.HTTP.Link.Writer
+import           Network.URI (URI)
 
 spec ∷ Spec
 spec = do
   describe "writeLinkHeader" $ do
-    let l u r = fromJust $ lnk u r
+    let l u r = fromJust $ lnk u r :: Link URI
 
     it "writes a single link" $ do
       writeLinkHeader [l "http://example.com" [(Rel, "next")]]

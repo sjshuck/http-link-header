@@ -28,8 +28,8 @@ writeParam (t, v) = mconcat ["; ", writeParamKey t, "=\"", escPar v, "\""]
   where escPar = pack . escapeURIString (/= '"') . unpack
         -- maybe URI escaping is not what we should do here? eh, whatever
 
-writeLink ∷ Link → Text
-writeLink l = mconcat $ ["<", pack . show $ href l, ">"] ++ map writeParam (linkParams l)
+writeLink ∷ (IsURI uri) ⇒ Link uri → Text
+writeLink (Link u ps) = mconcat $ ["<", uriToText u, ">"] ++ map writeParam ps
 
-writeLinkHeader ∷ [Link] → Text
+writeLinkHeader ∷ (IsURI uri) ⇒ [Link uri] → Text
 writeLinkHeader = intercalate ", " . map writeLink

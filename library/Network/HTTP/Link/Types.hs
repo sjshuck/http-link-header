@@ -11,41 +11,38 @@ data LinkParam = Rel | Anchor | Rev | Hreflang | Media | Title | Title' | Conten
   deriving (Eq, Show)
 
 -- | A single link containing some representation of a URL.
---
--- @since 1.1.0
-data GLink uri = Link uri [(LinkParam, Text)]
+data Link uri = Link uri [(LinkParam, Text)]
     deriving (Eq, Show)
 
 -- | Types that can represent URLs.
 --
--- For example, to parse links containing [@Text.URI.URI@ from the @modern-uri@ package](https://hackage.haskell.org/package/modern-uri-0.3.2.0/docs/Text-URI.html#t:URI), simply define:
+-- For example, to parse links containing @Text.URI.URI@ from the
+-- [modern-uri](https://hackage.haskell.org/package/modern-uri-0.3.2.0/docs/Text-URI.html#t:URI)
+-- package, simply define the orphan instance:
 --
 -- @
 --    instance IsURI Modern.URI where
 --        uriFromText = left displayException . mkURI
+--        uriToText = render
 -- @
 --
 -- @since 1.1.0
 class IsURI uri where
     uriFromText ∷ Text → Either String uri
+    uriToText ∷ uri → Text
 
 instance IsURI URI where
     uriFromText = maybe (Left "") Right . parseURIReference . unpack
+    uriToText = pack . show
 
 instance IsURI Text where
     uriFromText = Right
-
--- | A single link containing a network-uri URI.  Most of this library is
--- specialized to this case.
-type Link = GLink URI
+    uriToText = id
 
 -- | Extracts the URI from the link.
-href ∷ Link → URI
+href ∷ (IsURI uri) ⇒ Link uri → uri
 href (Link h _) = h
 
 -- | Extracts the parameters from the link.
-linkParams ∷ Link → [(LinkParam, Text)]
+linkParams ∷ Link uri → [(LinkParam, Text)]
 linkParams (Link _ ps) = ps
-
-lnk ∷ String → [(LinkParam, Text)] → Maybe Link
-lnk u r = parseURI u >>= return . \x → Link x r
