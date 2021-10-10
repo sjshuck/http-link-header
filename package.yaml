@@ -1,5 +1,5 @@
 name:                http-link-header
-version:             1.2.0
+version:             1.2.1
 synopsis:            A parser and writer for the HTTP Link header per RFC 5988
 category:            Web
 github:              myfreeweb/http-link-header
@@ -7,8 +7,7 @@ license:             PublicDomain
 license-file:        UNLICENSE
 author:              Greg V
 maintainer:          stevenjshuck@gmail.com
-copyright:           2014-2020 Greg V <greg@unrelenting.technology>
-tested-with:         GHC == 8.4.3, GHC == 8.8.3
+copyright:           2014-2021 Greg V <greg@unrelenting.technology>
 
 extra-source-files:
 - README.md
